@@ -11,19 +11,31 @@ class _TaxScreenState extends State<TaxScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Obtenemos el tamaño de la pantalla
+    final size = MediaQuery.of(context).size;
+    final double textScaleFactor = size.width * 0.005;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Impuestos')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      appBar: AppBar(
+        title:
+            Text('Impuestos', style: TextStyle(fontSize: 10 * textScaleFactor)),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 26),
-            const Text('¿Dónde pagas tus impuestos?',
-                style: TextStyle(fontSize: 24)),
-            const SizedBox(height: 8),
-            const Text('Elige el país donde pagas tus impuestos',
-                style: TextStyle(fontSize: 16)),
-            const SizedBox(height: 66),
+            SizedBox(height: size.height * 0.08),
+            Text(
+              '¿Dónde pagas tus impuestos?',
+              style: TextStyle(fontSize: 8 * textScaleFactor),
+            ),
+            SizedBox(height: size.height * 0.02),
+            Text(
+              'Elige el país donde pagas tus impuestos',
+              style: TextStyle(fontSize: 5 * textScaleFactor),
+            ),
+            SizedBox(height: size.height * 0.06),
             Container(
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
@@ -32,7 +44,10 @@ class _TaxScreenState extends State<TaxScreen> {
               child: Column(
                 children: [
                   CheckboxListTile(
-                    title: const Text('Ecuador'),
+                    title: Text(
+                      'Ecuador',
+                      style: TextStyle(fontSize: 5 * textScaleFactor),
+                    ),
                     value: _isEcuadorChecked,
                     onChanged: (newValue) {
                       setState(() {
@@ -40,9 +55,12 @@ class _TaxScreenState extends State<TaxScreen> {
                       });
                     },
                   ),
-                  const SizedBox(height: 66),
+                  SizedBox(height: size.height * 0.03),
                   CheckboxListTile(
-                    title: const Text('Otros Países'),
+                    title: Text(
+                      'Otros Países',
+                      style: TextStyle(fontSize: 5 * textScaleFactor),
+                    ),
                     value: _isOtherCountriesChecked,
                     onChanged: (newValue) {
                       setState(() {
@@ -53,9 +71,9 @@ class _TaxScreenState extends State<TaxScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 116),
+            SizedBox(height: size.height * 0.1),
             Image.asset('assets/images/pais.png'),
-            const SizedBox(height: 10),
+            SizedBox(height: size.height * 0.01),
             ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/terms');
@@ -63,10 +81,12 @@ class _TaxScreenState extends State<TaxScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
                 foregroundColor: Colors.white,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 146, vertical: 15),
+                padding: EdgeInsets.symmetric(
+                    horizontal: size.height * 0.21,
+                    vertical: size.height * 0.02),
               ),
-              child: const Text('Continuar'),
+              child: Text('Continuar',
+                  style: TextStyle(fontSize: 5 * textScaleFactor)),
             ),
           ],
         ),
