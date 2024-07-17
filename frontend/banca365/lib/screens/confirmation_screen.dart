@@ -48,7 +48,9 @@ class ConfirmationScreen extends StatelessWidget {
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     maxLength: 1,
-                    style: TextStyle(fontSize: 20), // Aumentar tamaño de texto
+                    style: TextStyle(
+                        fontSize:
+                            size.width * 0.04), // Aumentar tamaño de texto
                     onChanged: (value) {
                       if (value.length == 1 && index < 5) {
                         FocusScope.of(context).nextFocus();
