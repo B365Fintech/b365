@@ -15,41 +15,50 @@ class _WorkScreenState extends State<WorkScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Obtenemos el tamaño de la pantalla
+    final size = MediaQuery.of(context).size;
+    final double textScaleFactor = size.width * 0.005;
+
     return Scaffold(
-      body: Container(
-        color: const Color.fromARGB(255, 255, 255, 255),
-        padding: const EdgeInsets.all(16.0),
+      appBar: AppBar(
+        title: Text('Situación Laboral',
+            style: TextStyle(fontSize: 10 * textScaleFactor)),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
+              Text(
                 'Cuéntanos en qué trabajas',
                 style: TextStyle(
                   color: Color.fromARGB(255, 0, 0, 0),
-                  fontSize: 24.0,
+                  fontSize: 10 * textScaleFactor,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Image.asset('assets/images/trabajo.png'),
-              const SizedBox(height: 10.0),
-              const Text(
+              SizedBox(height: size.height * 0.03),
+              Text(
                 'Situación laboral',
                 style: TextStyle(
                   color: Color.fromARGB(255, 0, 0, 0),
-                  fontSize: 18.0,
+                  fontSize: 8 * textScaleFactor,
                 ),
               ),
-              const SizedBox(height: 20.0),
+              SizedBox(height: size.height * 0.03),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(5.0),
                 ),
                 child: CheckboxListTile(
-                  title: const Text(
+                  title: Text(
                     'Trabajador independiente',
-                    style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0),
+                        fontSize: 5 * textScaleFactor),
                   ),
                   value: _isIndependent,
                   onChanged: (bool? value) {
@@ -59,16 +68,18 @@ class _WorkScreenState extends State<WorkScreen> {
                   },
                 ),
               ),
-              const SizedBox(height: 10.0),
+              SizedBox(height: size.height * 0.02),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(5.0),
                 ),
                 child: CheckboxListTile(
-                  title: const Text(
+                  title: Text(
                     'Trabajo en una empresa',
-                    style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0),
+                        fontSize: 5 * textScaleFactor),
                   ),
                   value: _isEmployed,
                   onChanged: (bool? value) {
@@ -78,16 +89,18 @@ class _WorkScreenState extends State<WorkScreen> {
                   },
                 ),
               ),
-              const SizedBox(height: 10.0),
+              SizedBox(height: size.height * 0.02),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(5.0),
                 ),
                 child: CheckboxListTile(
-                  title: const Text(
+                  title: Text(
                     'No trabajo',
-                    style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0),
+                        fontSize: 5 * textScaleFactor),
                   ),
                   value: _isUnemployed,
                   onChanged: (bool? value) {
@@ -97,22 +110,28 @@ class _WorkScreenState extends State<WorkScreen> {
                   },
                 ),
               ),
-              const SizedBox(height: 20.0),
-              TextField(
-                controller: _companyController,
-                decoration: InputDecoration(
-                  labelText: 'Nombre de la empresa',
-                  labelStyle: TextStyle(color: Colors.black),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
+              SizedBox(height: size.height * 0.03),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: TextField(
+                  controller: _companyController,
+                  decoration: InputDecoration(
+                    labelText: 'Nombre de la empresa',
+                    labelStyle: TextStyle(
+                        color: Colors.black, fontSize: 5 * textScaleFactor),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 0, 0, 0),
+                      fontSize: 5 * textScaleFactor),
                 ),
-                style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
               ),
-              const SizedBox(height: 100.0),
+              SizedBox(height: size.height * 0.09),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/tax');
@@ -121,9 +140,11 @@ class _WorkScreenState extends State<WorkScreen> {
                   backgroundColor: Colors.blue, // Fondo azul
                   foregroundColor: Colors.white, // Texto blanco
                   padding: EdgeInsets.symmetric(
-                      horizontal: 150, vertical: 15), // Padding
+                      horizontal: size.height * 0.21,
+                      vertical: size.height * 0.02), // Padding
                 ),
-                child: const Text('Continuar'),
+                child: Text('Continuar',
+                    style: TextStyle(fontSize: 5 * textScaleFactor)),
               ),
             ],
           ),

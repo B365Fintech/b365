@@ -36,45 +36,56 @@ class _SuccessScreenState extends State<SuccessScreen>
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final screenHeight = mediaQuery.size.height;
+    final screenWidth = mediaQuery.size.width;
+
     return Scaffold(
       appBar: AppBar(title: const Text('Éxito')),
       body: Container(
         color: Colors.blue,
         child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset('assets/images/logo.png',
-                    width: 250, height: 250), // Logo
-                const SizedBox(height: 20),
-                SlideTransition(
-                  position: _animation,
-                  child: const Text(
-                    'Su cuenta ha sido creada con éxito!!!',
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(screenWidth * 0.04),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/logo.png',
+                    width: screenWidth * 0.5,
+                    height: screenHeight * 0.3,
+                  ), // Logo
+                  SizedBox(height: screenHeight * 0.02),
+                  SlideTransition(
+                    position: _animation,
+                    child: const Text(
+                      'Su cuenta ha sido creada con éxito!!!',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
                   ),
-                ),
-                const SizedBox(height: 180),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/login');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.blue,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 146, vertical: 15),
+                  SizedBox(height: screenHeight * 0.15),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/begin');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.blue,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 0.3,
+                        vertical: screenHeight * 0.02,
+                      ),
+                    ),
+                    child: const Text('Iniciar'),
                   ),
-                  child: const Text('Iniciar'),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

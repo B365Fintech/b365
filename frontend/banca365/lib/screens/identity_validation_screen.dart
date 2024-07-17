@@ -59,36 +59,43 @@ class _IdentityValidationScreenState extends State<IdentityValidationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Obtener el tamaño de la pantalla
+    final size = MediaQuery.of(context).size;
+    final double textScaleFactor = size.width * 0.005;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Validación de Identidad'),
+        title: Text('Validación de Identidad',
+            style: TextStyle(fontSize: 10 * textScaleFactor)),
       ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 20),
+            SizedBox(height: size.height * 0.02),
             Text(
               'Validación de Identidad',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 8 * textScaleFactor, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: size.height * 0.02),
             Container(
-              // Ajuste aquí
-              margin: EdgeInsets.symmetric(horizontal: 6.0),
+              margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
               child: Stack(
                 children: [
-                  Expanded(
+                  SizedBox(
+                    height: size.height * 0.5,
+                    width: size.width,
                     child: _isCameraInitialized
                         ? CameraPreview(_controller)
                         : Center(child: CircularProgressIndicator()),
                   ),
                   Positioned(
-                    left: 50,
-                    top: 50,
+                    left: size.width * 0.22,
+                    top: size.height * 0.10,
                     child: Container(
-                      width: 200,
-                      height: 200,
+                      width: size.width * 0.5,
+                      height: size.height * 0.3,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.red, width: 2),
                         borderRadius: BorderRadius.circular(10),
@@ -96,7 +103,10 @@ class _IdentityValidationScreenState extends State<IdentityValidationScreen> {
                       child: Center(
                         child: Text(
                           'Alinea tu cara aquí',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 5 * textScaleFactor),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
@@ -104,15 +114,17 @@ class _IdentityValidationScreenState extends State<IdentityValidationScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: size.height * 0.02),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
               child: ElevatedButton(
                 onPressed: _takePicture,
                 child: SizedBox(
                   width: double.infinity,
-                  height: 50,
-                  child: Center(child: Text('Tomar Foto')),
+                  height: size.height * 0.06,
+                  child: Center(
+                      child: Text('Tomar Foto',
+                          style: TextStyle(fontSize: 5 * textScaleFactor))),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -120,17 +132,19 @@ class _IdentityValidationScreenState extends State<IdentityValidationScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: size.height * 0.02),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/personal_data');
                 },
                 child: SizedBox(
                   width: double.infinity,
-                  height: 50,
-                  child: Center(child: Text('validar')),
+                  height: size.height * 0.06,
+                  child: Center(
+                      child: Text('Validar',
+                          style: TextStyle(fontSize: 5 * textScaleFactor))),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
