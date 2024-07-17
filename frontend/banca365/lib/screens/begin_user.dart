@@ -80,115 +80,118 @@ class _BeginLoginState extends State<BeginLogin> {
       appBar: AppBar(
         title: const Text('Inicio de Sesión'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Bienvenidos',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Image.asset(
-              'assets/images/logoanimado.gif',
-              width: size.width * 0.6,
-              height: size.width * 0.6,
-            ),
-            SizedBox(height: size.height * 0.05),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: _isBiometricAvailable ? _authenticate : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    minimumSize: Size(buttonWidth, buttonHeight),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: size.width * 0.05,
-                      vertical: size.height * 0.02,
+      body: Container(
+        color: Colors.blue, // Fondo azul
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(size.width * 0.04),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Bienvenidos',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Text(
-                        'Huella Dactilar',
-                        style: TextStyle(fontSize: fontSize),
+                  Image.asset(
+                    'assets/images/logoanimado.gif',
+                    width: size.width * 0.6,
+                    height: size.width * 0.6,
+                  ),
+                  SizedBox(height: size.height * 0.05),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: _isBiometricAvailable ? _authenticate : null,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.blue,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          minimumSize: Size(buttonWidth, buttonHeight),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: size.width * 0.05,
+                            vertical: size.height * 0.02,
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text(
+                              'Huella Dactilar',
+                              style: TextStyle(fontSize: fontSize),
+                            ),
+                            Icon(
+                              Icons.fingerprint,
+                              color: Colors.blue,
+                              size: iconSize,
+                            ),
+                          ],
+                        ),
                       ),
-                      Icon(
-                        Icons.fingerprint,
-                        color: Colors.white,
-                        size: iconSize,
+                      SizedBox(width: size.width * 0.05),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/login');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.blue,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          minimumSize: Size(buttonWidth, buttonHeight),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: size.width * 0.05,
+                            vertical: size.height * 0.02,
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text(
+                              'Usuario o Correo',
+                              style: TextStyle(fontSize: fontSize),
+                            ),
+                            Icon(
+                              Icons.person,
+                              color: Colors.blue,
+                              size: iconSize,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
-                ),
-                SizedBox(width: size.width * 0.05),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/login');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    minimumSize: Size(buttonWidth, buttonHeight),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: size.width * 0.05,
-                      vertical: size.height * 0.02,
+                  SizedBox(height: size.height * 0.02),
+                  Text(
+                    'No tienes una cuenta?',
+                    style: TextStyle(fontSize: fontSize, color: Colors.white),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/register');
+                    },
+                    child: Text(
+                      'Crear cuenta',
+                      style: TextStyle(fontSize: fontSize, color: Colors.white),
                     ),
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Text(
-                        'Usuario o Correo',
-                        style: TextStyle(fontSize: fontSize),
-                      ),
-                      Icon(
-                        Icons.person,
-                        color: Colors.white,
-                        size: iconSize,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: size.height * 0.02),
-            Text(
-              'No tienes una cuenta?',
-              style: TextStyle(fontSize: fontSize, color: Colors.black),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/register');
-              },
-              child: Text(
-                'Crear cuenta',
-                style: TextStyle(fontSize: fontSize, color: Colors.blue),
+                ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 }
-
-
-
-
-
 
 
 
