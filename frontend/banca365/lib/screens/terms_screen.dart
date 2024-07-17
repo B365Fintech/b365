@@ -16,14 +16,18 @@ class _TermsScreenState extends State<TermsScreen> {
     // Obtenemos el tamaño de la pantalla
     final size = MediaQuery.of(context).size;
     final double textScaleFactor = size.width * 0.005;
+    final double buttonHeight = size.height * 0.07; // Altura del botón
+    final double buttonWidth = size.width * 0.8; // Anchura del botón
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Términos y Condiciones',
-            style: TextStyle(fontSize: 8 * textScaleFactor)),
+        title: Text(
+          'Términos y Condiciones',
+          style: TextStyle(fontSize: 8 * textScaleFactor),
+        ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(size.width * 0.05),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -87,10 +91,20 @@ class _TermsScreenState extends State<TermsScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
                 foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                minimumSize: Size(buttonWidth, buttonHeight),
+                padding: EdgeInsets.symmetric(
+                  horizontal: size.width * 0.01,
+                  vertical: size.height * 0.01,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10), // Bordes redondeados
+                ),
+                textStyle: TextStyle(fontSize: 5 * textScaleFactor),
               ),
-              child: Text('Continuar',
-                  style: TextStyle(fontSize: 5 * textScaleFactor)),
+              child: Text(
+                'Continuar',
+                style: TextStyle(fontSize: 5 * textScaleFactor),
+              ),
             ),
           ],
         ),

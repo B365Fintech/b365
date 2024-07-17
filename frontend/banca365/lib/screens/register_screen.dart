@@ -13,6 +13,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     // Obtener el tamaño de la pantalla
     final size = MediaQuery.of(context).size;
     final double textScaleFactor = size.width * 0.005;
+    final double buttonHeight = size.height * 0.07; // Altura del botón
+    final double buttonWidth = size.width * 0.8; // Anchura del botón
 
     return Scaffold(
       appBar: AppBar(
@@ -100,9 +102,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFF1e90ff),
                 foregroundColor: Colors.white,
+                minimumSize: Size(buttonWidth, buttonHeight),
                 padding: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.39,
-                    vertical: size.height * 0.03),
+                  horizontal: size.width * 0.01,
+                  vertical: size.height * 0.01,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10), // Bordes redondeados
+                ),
                 textStyle: TextStyle(fontSize: 5 * textScaleFactor),
               ),
               child: Text('Confirmar'),

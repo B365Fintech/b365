@@ -9,11 +9,13 @@ class ConfirmationScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Confirmación de Cuenta',
-            style: TextStyle(fontSize: 10 * textScaleFactor)),
+        title: Text(
+          'Confirmación de Cuenta',
+          style: TextStyle(fontSize: 10 * textScaleFactor),
+        ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(size.width * 0.05),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -30,23 +32,31 @@ class ConfirmationScreen extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: size.height * 0.03),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              child: TextField(
-                decoration: InputDecoration(
-                  labelText: 'Código',
-                  labelStyle: TextStyle(fontSize: 5 * textScaleFactor),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(6, (index) {
+                return Container(
+                  margin: EdgeInsets.symmetric(horizontal: size.width * 0.02),
+                  width: size.width * 0.10,
+                  child: TextField(
+                    decoration: InputDecoration(
+                      labelText: ' ',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                    ),
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
+                    maxLength: 1,
+                    style: TextStyle(fontSize: 20), // Aumentar tamaño de texto
+                    onChanged: (value) {
+                      if (value.length == 1 && index < 5) {
+                        FocusScope.of(context).nextFocus();
+                      }
+                    },
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blue),
-                  ),
-                ),
-              ),
+                );
+              }),
             ),
             SizedBox(height: size.height * 0.03),
             ElevatedButton(
@@ -56,10 +66,12 @@ class ConfirmationScreen extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
                 foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                minimumSize: Size(size.width * 0.8, size.height * 0.07),
               ),
-              child: Text('Continuar',
-                  style: TextStyle(fontSize: 5 * textScaleFactor)),
+              child: Text(
+                'Continuar',
+                style: TextStyle(fontSize: 5 * textScaleFactor),
+              ),
             ),
           ],
         ),
