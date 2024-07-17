@@ -64,7 +64,7 @@ class _SuccessScreenState extends State<SuccessScreen>
                 const SizedBox(height: 180),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/login');
+                    Navigator.pushNamed(context, '/begin');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,

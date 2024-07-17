@@ -23,8 +23,8 @@ class _SliderScreenState extends State<SliderScreen> {
         color: Color(0xFF1e90ff), // Establecer el fondo azul oscuro
         child: Center(
           child: Image.asset('assets/images/logoanimado.gif',
-              width: 200,
-              height: 200), // Asegúrate de tener la imagen en la carpeta assets
+              width: 300,
+              height: 300), // Asegúrate de tener la imagen en la carpeta assets
         ),
       ),
     );
