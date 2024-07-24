@@ -1,11 +1,88 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class ConfirmationScreen extends StatelessWidget {
+class ConfirmationScreen extends StatefulWidget {
+  @override
+  _ConfirmationScreenState createState() => _ConfirmationScreenState();
+}
+
+class _ConfirmationScreenState extends State<ConfirmationScreen> {
+  List<String> _codeFields = List.filled(6, '');
+  bool _isButtonEnabled = false;
+  String _codigo = '';
+
+  // Verificar si todos los campos están llenos
+  void _checkCodeCompletion() {
+    setState(() {
+      _isButtonEnabled = _codeFields.every((field) => field.isNotEmpty);
+    });
+  }
+
+  // Manejar el cambio de valor en un cuadro de texto
+  void _onCodeChanged(String value, int index) {
+    if (value.length == 1 && index < 5) {
+      FocusScope.of(context).nextFocus();
+    }
+    setState(() {
+      _codeFields[index] = value;
+      _checkCodeCompletion();
+    });
+  }
+
+  // Obtener el código completo
+  String get _codigoCompleto => _codeFields.join();
+
+  // Función para consumir la API
+  Future<void> _verificarCuenta(String email, String codigo) async {
+    final url = Uri.parse('http://localhost:5063/api/Usuario/verificar-cuenta');
+    final response = await http.put(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': email,
+        'codigo': codigo,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      // Si la respuesta es 200, navega a la siguiente pantalla
+      Navigator.pushNamed(context, '/success');
+    } else {
+      // Si no, muestra un mensaje de error con la respuesta
+      final responseBody = jsonDecode(response.body);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${responseBody['message']}')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Obtenemos el tamaño de la pantalla
     final size = MediaQuery.of(context).size;
     final double textScaleFactor = size.width * 0.005;
+
+    // Recibir datos enviados desde la pantalla anterior (TermsScreen)
+    final args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
+    // Imprimir datos recibidos por consola
+    print(
+        'Datos recibidos en ConfirmationScreen:----------------------------------------------');
+    print('Cédula: ${args['cedula']}');
+    print('Código Dactilar: ${args['codigoDactilar']}');
+    print('Correo Electrónico: ${args['email']}');
+    print('Contraseña: ${args['password']}');
+    print('Provincia: ${args['provincia']}');
+    print('Situación Laboral: ${args['situacionLaboral']}');
+    if (args['situacionLaboral'] == 'Empresa') {
+      print('Nombre de la Empresa: ${args['nombreEmpresa']}');
+    }
+    print('Impuesto: ${args['impuesto']}');
+    print('Términos aceptados: ${args['terminos']}');
 
     return Scaffold(
       appBar: AppBar(
@@ -52,9 +129,7 @@ class ConfirmationScreen extends StatelessWidget {
                         fontSize:
                             size.width * 0.04), // Aumentar tamaño de texto
                     onChanged: (value) {
-                      if (value.length == 1 && index < 5) {
-                        FocusScope.of(context).nextFocus();
-                      }
+                      _onCodeChanged(value, index);
                     },
                   ),
                 );
@@ -62,9 +137,12 @@ class ConfirmationScreen extends StatelessWidget {
             ),
             SizedBox(height: size.height * 0.03),
             ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/success');
-              },
+              onPressed: _isButtonEnabled
+                  ? () {
+                      _codigo = _codigoCompleto;
+                      _verificarCuenta(args['email'], _codigo);
+                    }
+                  : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
                 foregroundColor: Colors.white,

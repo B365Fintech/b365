@@ -8,14 +8,67 @@ class TaxScreen extends StatefulWidget {
 class _TaxScreenState extends State<TaxScreen> {
   bool _isEcuadorChecked = false;
   bool _isOtherCountriesChecked = false;
+  String? _impuesto;
+
+  // Variables para recibir datos
+  late String fotoBase64;
+  late String cedula;
+  late String codigoDactilar;
+  late String email;
+  late String password;
+  late String provincia;
+  late String situacionLaboral;
+  late String nombreEmpresa;
+
+  @override
+  void initState() {
+    super.initState();
+    // Inicialización de variables al iniciar el estado
+    fotoBase64 = '';
+    cedula = '';
+    codigoDactilar = '';
+    email = '';
+    password = '';
+    provincia = '';
+    situacionLaboral = '';
+    nombreEmpresa = '';
+  }
+
+  // Método para imprimir los datos recibidos por consola
+  void printReceivedData(Map<String, dynamic> data) {
+    fotoBase64 = data['fotoBase64'];
+    cedula = data['cedula'];
+    codigoDactilar = data['codigoDactilar'];
+    email = data['email'];
+    password = data['password'];
+    provincia = data['provincia'];
+    situacionLaboral = data['situacionLaboral'];
+    nombreEmpresa = data['nombreEmpresa'] ?? '';
+
+    print('Datos recibidos en TaxScreen:');
+    print('Foto en Base64: $fotoBase64');
+    print('Cédula: $cedula');
+    print('Código Dactilar: $codigoDactilar');
+    print('Correo Electrónico: $email');
+    print('Contraseña: $password');
+    print('Provincia: $provincia');
+    print('Situación Laboral: $situacionLaboral');
+    if (situacionLaboral == 'Empresa') {
+      print('Nombre de la Empresa: $nombreEmpresa');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Obtenemos el tamaño de la pantalla
     final size = MediaQuery.of(context).size;
     final double textScaleFactor = size.width * 0.005;
-    final double buttonHeight = size.height * 0.07; // Altura del botón
-    final double buttonWidth = size.width * 0.8; // Anchura del botón
+    final double buttonHeight = size.height * 0.07;
+    final double buttonWidth = size.width * 0.8;
+
+    // Recibir datos enviados desde la pantalla anterior (WorkScreen)
+    final args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    printReceivedData(args); // Llama a la función para imprimir datos
 
     return Scaffold(
       appBar: AppBar(
@@ -56,6 +109,12 @@ class _TaxScreenState extends State<TaxScreen> {
                     onChanged: (newValue) {
                       setState(() {
                         _isEcuadorChecked = newValue ?? false;
+                        if (_isEcuadorChecked) {
+                          _isOtherCountriesChecked = false;
+                          _impuesto = 'Ecuador';
+                        } else {
+                          _impuesto = null;
+                        }
                       });
                     },
                   ),
@@ -69,6 +128,12 @@ class _TaxScreenState extends State<TaxScreen> {
                     onChanged: (newValue) {
                       setState(() {
                         _isOtherCountriesChecked = newValue ?? false;
+                        if (_isOtherCountriesChecked) {
+                          _isEcuadorChecked = false;
+                          _impuesto = 'Otros Países';
+                        } else {
+                          _impuesto = null;
+                        }
                       });
                     },
                   ),
@@ -83,7 +148,33 @@ class _TaxScreenState extends State<TaxScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/terms');
+                if (_impuesto == null) {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Selecciona un país para pagar impuestos'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  // Navegar a la siguiente pantalla /terms y pasar todos los datos
+                  Navigator.pushNamed(context, '/terms', arguments: {
+                    'fotoBase64': fotoBase64,
+                    'cedula': cedula,
+                    'codigoDactilar': codigoDactilar,
+                    'email': email,
+                    'password': password,
+                    'provincia': provincia,
+                    'situacionLaboral': situacionLaboral,
+                    'nombreEmpresa': nombreEmpresa,
+                    'impuesto': _impuesto,
+                  });
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
@@ -94,7 +185,7 @@ class _TaxScreenState extends State<TaxScreen> {
                   vertical: size.height * 0.01,
                 ),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10), // Bordes redondeados
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 textStyle: TextStyle(fontSize: 5 * textScaleFactor),
               ),

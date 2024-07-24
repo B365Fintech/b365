@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -7,6 +9,12 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   bool _isChecked = false;
+  bool _isLoading = false;
+  bool _isButtonEnabled = false;
+  String _responseMessage = '';
+  final TextEditingController _cedulaController = TextEditingController();
+  final TextEditingController _codigoDactilarController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +62,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             SizedBox(height: size.height * 0.03),
             TextField(
+              controller: _cedulaController,
               decoration: InputDecoration(
                 labelText: 'Cédula',
                 labelStyle: TextStyle(fontSize: 5 * textScaleFactor),
@@ -63,9 +72,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               keyboardType: TextInputType.number,
               style: TextStyle(fontSize: 5 * textScaleFactor),
+              onChanged: (text) => _updateButtonState(),
             ),
             SizedBox(height: size.height * 0.02),
             TextField(
+              controller: _codigoDactilarController,
               decoration: InputDecoration(
                 labelText: 'Código Dactilar',
                 labelStyle: TextStyle(fontSize: 5 * textScaleFactor),
@@ -74,6 +85,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               style: TextStyle(fontSize: 5 * textScaleFactor),
+              onChanged: (text) => _updateButtonState(),
             ),
             SizedBox(height: size.height * 0.02),
             Row(
@@ -83,6 +95,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   onChanged: (bool? newValue) {
                     setState(() {
                       _isChecked = newValue ?? false;
+                      _updateButtonState();
                     });
                   },
                 ),
@@ -95,28 +108,95 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ],
             ),
             SizedBox(height: size.height * 0.08),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/identity_validation');
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF1e90ff),
-                foregroundColor: Colors.white,
-                minimumSize: Size(buttonWidth, buttonHeight),
-                padding: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.01,
-                  vertical: size.height * 0.01,
+            _isLoading
+                ? CircularProgressIndicator()
+                : ElevatedButton(
+                    onPressed: _isButtonEnabled ? _checkConnection : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF1e90ff),
+                      foregroundColor: Colors.white,
+                      minimumSize: Size(buttonWidth, buttonHeight),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: size.width * 0.01,
+                        vertical: size.height * 0.01,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(10), // Bordes redondeados
+                      ),
+                      textStyle: TextStyle(fontSize: 5 * textScaleFactor),
+                    ),
+                    child: Text('Confirmar'),
+                  ),
+            if (_responseMessage.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.only(top: size.height * 0.02),
+                child: Text(
+                  _responseMessage,
+                  style: TextStyle(
+                    color: _responseMessage == 'Cédula válida'
+                        ? Colors.green
+                        : Colors.red,
+                    fontSize: 5 * textScaleFactor,
+                  ),
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10), // Bordes redondeados
-                ),
-                textStyle: TextStyle(fontSize: 5 * textScaleFactor),
               ),
-              child: Text('Confirmar'),
-            ),
           ],
         ),
       ),
     );
+  }
+
+  void _updateButtonState() {
+    setState(() {
+      _isButtonEnabled = _cedulaController.text.isNotEmpty &&
+          _codigoDactilarController.text.isNotEmpty &&
+          _isChecked;
+    });
+  }
+
+  Future<void> _checkConnection() async {
+    setState(() {
+      _isLoading = true;
+      _responseMessage = '';
+    });
+
+    final url = 'http://localhost:5063/api/RegistroCivil/validar-cedula';
+    final headers = {'Content-Type': 'application/json', 'Accept': '*/*'};
+    final body = json.encode({
+      'cedula': _cedulaController.text,
+      'codigoDactilar': _codigoDactilarController.text,
+    });
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: headers,
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        Navigator.pushNamed(
+          context,
+          '/identity_validation',
+          arguments: {
+            'cedula': _cedulaController.text,
+            'codigoDactilar': _codigoDactilarController.text,
+          },
+        );
+      } else {
+        setState(() {
+          _responseMessage = 'Cédula o código dactilar incorrectos';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _responseMessage = 'Error en la conexión: $e';
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 }

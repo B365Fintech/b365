@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert'; // Para codificar la solicitud JSON
 
 class TermsScreen extends StatefulWidget {
   const TermsScreen({super.key});
@@ -11,6 +13,119 @@ class _TermsScreenState extends State<TermsScreen> {
   bool _acceptTerms = false;
   bool _readAndAcceptTerms = false;
 
+  // Variables para recibir datos
+  late String fotoBase64;
+  late String cedula;
+  late String codigoDactilar;
+  late String email;
+  late String password;
+  late String provincia;
+  late String situacionLaboral;
+  late String nombreEmpresa;
+  late String impuesto;
+
+  @override
+  void initState() {
+    super.initState();
+    // Inicialización de variables al iniciar el estado
+    fotoBase64 = '';
+    cedula = '';
+    codigoDactilar = '';
+    email = '';
+    password = '';
+    provincia = '';
+    situacionLaboral = '';
+    nombreEmpresa = '';
+    impuesto = '';
+  }
+
+  // Método para imprimir los datos recibidos por consola
+  void printReceivedData(Map<String, dynamic> data) {
+    fotoBase64 = data['fotoBase64'];
+    cedula = data['cedula'];
+    codigoDactilar = data['codigoDactilar'];
+    email = data['email'];
+    password = data['password'];
+    provincia = data['provincia'];
+    situacionLaboral = data['situacionLaboral'];
+    nombreEmpresa = data['nombreEmpresa'] ?? '';
+    impuesto = data['impuesto'];
+
+    print('Datos recibidos en TermsScreen:');
+    print('Foto en Base64: $fotoBase64');
+    print('Cédula: $cedula');
+    print('Código Dactilar: $codigoDactilar');
+    print('Correo Electrónico: $email');
+    print('Contraseña: $password');
+    print('Provincia: $provincia');
+    print('Situación Laboral: $situacionLaboral');
+    if (situacionLaboral == 'Empresa') {
+      print('Nombre de la Empresa: $nombreEmpresa');
+    }
+    print('Impuesto: $impuesto');
+  }
+
+  // Método para realizar la solicitud POST y manejar la respuesta
+  Future<void> _submitForm() async {
+    final url = Uri.parse('http://localhost:5063/api/Usuario/crear-cuenta');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'nombres':
+            'denis', // Asegúrate de reemplazar estos valores por los reales
+        'apellidos': 'diaz',
+        'cedula': cedula,
+        'codigoDactilar': codigoDactilar,
+        'celular': '0967959721', // Debes obtener este dato de alguna forma
+        'email': email,
+        'provincia': provincia,
+        'rostroBase64': fotoBase64,
+        'situacionLaboral': situacionLaboral,
+        'empresa': nombreEmpresa,
+        'paisPagoImpuestos': impuesto,
+        'aceptoTerminosYConcidiones': true,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      Navigator.pushNamed(context, '/confirmation', arguments: {
+        'fotoBase64': fotoBase64,
+        'cedula': cedula,
+        'codigoDactilar': codigoDactilar,
+        'email': email,
+        'password': password,
+        'provincia': provincia,
+        'situacionLaboral': situacionLaboral,
+        'nombreEmpresa': nombreEmpresa,
+        'impuesto': impuesto,
+        'terminos': true,
+      });
+    } else {
+      // Mostrar mensaje de error
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content:
+                Text('Error en la creación de la cuenta: ${response.body}'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Obtenemos el tamaño de la pantalla
@@ -18,6 +133,11 @@ class _TermsScreenState extends State<TermsScreen> {
     final double textScaleFactor = size.width * 0.005;
     final double buttonHeight = size.height * 0.07; // Altura del botón
     final double buttonWidth = size.width * 0.8; // Anchura del botón
+
+    // Recibir datos enviados desde la pantalla anterior (TaxScreen)
+    final args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    printReceivedData(args); // Llama a la función para imprimir datos
 
     return Scaffold(
       appBar: AppBar(
@@ -83,11 +203,8 @@ class _TermsScreenState extends State<TermsScreen> {
             ),
             SizedBox(height: size.height * 0.03),
             ElevatedButton(
-              onPressed: _acceptTerms && _readAndAcceptTerms
-                  ? () {
-                      Navigator.pushNamed(context, '/confirmation');
-                    }
-                  : null,
+              onPressed:
+                  _acceptTerms && _readAndAcceptTerms ? _submitForm : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
                 foregroundColor: Colors.white,

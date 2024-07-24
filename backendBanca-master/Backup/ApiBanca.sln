@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34916.146
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiBanca", "ApiBanca\ApiBanca.csproj", "{C4A1AE5F-44D4-4971-9250-F522EDFBBA05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aplicacion", "Aplicacion\Aplicacion.csproj", "{7810066F-4EFD-4F9A-8E57-F73D643C5081}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C4A1AE5F-44D4-4971-9250-F522EDFBBA05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4A1AE5F-44D4-4971-9250-F522EDFBBA05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4A1AE5F-44D4-4971-9250-F522EDFBBA05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4A1AE5F-44D4-4971-9250-F522EDFBBA05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7810066F-4EFD-4F9A-8E57-F73D643C5081}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7810066F-4EFD-4F9A-8E57-F73D643C5081}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7810066F-4EFD-4F9A-8E57-F73D643C5081}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7810066F-4EFD-4F9A-8E57-F73D643C5081}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6B8ABF57-D383-454D-9ECA-37BAB143C969}
+	EndGlobalSection
+EndGlobal
