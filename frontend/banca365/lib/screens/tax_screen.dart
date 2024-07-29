@@ -15,24 +15,12 @@ class _TaxScreenState extends State<TaxScreen> {
   late String cedula;
   late String codigoDactilar;
   late String email;
-  late String password;
   late String provincia;
+  late String celular;
   late String situacionLaboral;
   late String nombreEmpresa;
-
-  @override
-  void initState() {
-    super.initState();
-    // Inicialización de variables al iniciar el estado
-    fotoBase64 = '';
-    cedula = '';
-    codigoDactilar = '';
-    email = '';
-    password = '';
-    provincia = '';
-    situacionLaboral = '';
-    nombreEmpresa = '';
-  }
+  late String nombre;
+  late String apellido;
 
   // Método para imprimir los datos recibidos por consola
   void printReceivedData(Map<String, dynamic> data) {
@@ -40,19 +28,23 @@ class _TaxScreenState extends State<TaxScreen> {
     cedula = data['cedula'];
     codigoDactilar = data['codigoDactilar'];
     email = data['email'];
-    password = data['password'];
+    celular = data['celular'];
     provincia = data['provincia'];
     situacionLaboral = data['situacionLaboral'];
     nombreEmpresa = data['nombreEmpresa'] ?? '';
+    nombre = data['nombres'];
+    apellido = data['apellidos'];
 
     print('Datos recibidos en TaxScreen:');
     print('Foto en Base64: $fotoBase64');
     print('Cédula: $cedula');
     print('Código Dactilar: $codigoDactilar');
     print('Correo Electrónico: $email');
-    print('Contraseña: $password');
     print('Provincia: $provincia');
     print('Situación Laboral: $situacionLaboral');
+    print('Célular: $celular');
+    print('Nombre: $nombre');
+    print('Apellido: $apellido');
     if (situacionLaboral == 'Empresa') {
       print('Nombre de la Empresa: $nombreEmpresa');
     }
@@ -168,11 +160,13 @@ class _TaxScreenState extends State<TaxScreen> {
                     'cedula': cedula,
                     'codigoDactilar': codigoDactilar,
                     'email': email,
-                    'password': password,
                     'provincia': provincia,
+                    'celular': cedula,
                     'situacionLaboral': situacionLaboral,
                     'nombreEmpresa': nombreEmpresa,
                     'impuesto': _impuesto,
+                    'nombres': nombre,
+                    'apellidos': apellido,
                   });
                 }
               },

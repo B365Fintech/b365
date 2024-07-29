@@ -161,7 +161,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       _responseMessage = '';
     });
 
-    final url = 'http://localhost:5063/api/RegistroCivil/validar-cedula';
+    final url = 'https://servicios-web.lat/api/RegistroCivil/validar-cedula';
     final headers = {'Content-Type': 'application/json', 'Accept': '*/*'};
     final body = json.encode({
       'cedula': _cedulaController.text,

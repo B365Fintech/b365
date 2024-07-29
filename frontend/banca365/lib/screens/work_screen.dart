@@ -18,8 +18,10 @@ class _WorkScreenState extends State<WorkScreen> {
     print('Cédula: ${data['cedula']}');
     print('Código Dactilar: ${data['codigoDactilar']}');
     print('Correo Electrónico: ${data['email']}');
-    print('Contraseña: ${data['password']}');
+    print('Celular: ${data['celular']}');
     print('Provincia: ${data['provincia']}');
+    print('Nombres: ${data['nombres']}'); // Añadido
+    print('Apellidos: ${data['apellidos']}'); // Añadido
   }
 
   @override

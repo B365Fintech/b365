@@ -18,11 +18,13 @@ class _TermsScreenState extends State<TermsScreen> {
   late String cedula;
   late String codigoDactilar;
   late String email;
-  late String password;
   late String provincia;
+  late String celular;
   late String situacionLaboral;
   late String nombreEmpresa;
   late String impuesto;
+  late String nombre;
+  late String apellido;
 
   @override
   void initState() {
@@ -32,11 +34,13 @@ class _TermsScreenState extends State<TermsScreen> {
     cedula = '';
     codigoDactilar = '';
     email = '';
-    password = '';
+    celular = '';
     provincia = '';
     situacionLaboral = '';
     nombreEmpresa = '';
     impuesto = '';
+    nombre = '';
+    apellido = '';
   }
 
   // Método para imprimir los datos recibidos por consola
@@ -44,42 +48,44 @@ class _TermsScreenState extends State<TermsScreen> {
     fotoBase64 = data['fotoBase64'];
     cedula = data['cedula'];
     codigoDactilar = data['codigoDactilar'];
+    celular = data['celular'];
     email = data['email'];
-    password = data['password'];
     provincia = data['provincia'];
     situacionLaboral = data['situacionLaboral'];
     nombreEmpresa = data['nombreEmpresa'] ?? '';
     impuesto = data['impuesto'];
+    nombre = data['nombres'];
+    apellido = data['apellidos'];
 
     print('Datos recibidos en TermsScreen:');
     print('Foto en Base64: $fotoBase64');
     print('Cédula: $cedula');
     print('Código Dactilar: $codigoDactilar');
     print('Correo Electrónico: $email');
-    print('Contraseña: $password');
     print('Provincia: $provincia');
     print('Situación Laboral: $situacionLaboral');
     if (situacionLaboral == 'Empresa') {
       print('Nombre de la Empresa: $nombreEmpresa');
     }
     print('Impuesto: $impuesto');
+    print('Nombre: $nombre');
+    print('Apellido: $apellido');
   }
 
   // Método para realizar la solicitud POST y manejar la respuesta
   Future<void> _submitForm() async {
-    final url = Uri.parse('http://localhost:5063/api/Usuario/crear-cuenta');
+    final url = Uri.parse('https://servicios-web.lat/api/Usuario/crear-cuenta');
     final response = await http.post(
       url,
       headers: {
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
-        'nombres':
-            'denis', // Asegúrate de reemplazar estos valores por los reales
-        'apellidos': 'diaz',
+        'nombres': nombre,
+        'apellidos': apellido,
         'cedula': cedula,
         'codigoDactilar': codigoDactilar,
-        'celular': '0967959721', // Debes obtener este dato de alguna forma
+        'celular': celular, // Debes obtener este dato de alguna forma
         'email': email,
         'provincia': provincia,
         'rostroBase64': fotoBase64,
@@ -96,12 +102,13 @@ class _TermsScreenState extends State<TermsScreen> {
         'cedula': cedula,
         'codigoDactilar': codigoDactilar,
         'email': email,
-        'password': password,
         'provincia': provincia,
         'situacionLaboral': situacionLaboral,
         'nombreEmpresa': nombreEmpresa,
         'impuesto': impuesto,
         'terminos': true,
+        'nombre': nombre,
+        'apellido': apellido,
       });
     } else {
       // Mostrar mensaje de error

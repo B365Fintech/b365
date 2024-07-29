@@ -83,6 +83,8 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
     }
     print('Impuesto: ${args['impuesto']}');
     print('Términos aceptados: ${args['terminos']}');
+    print('Nombre: ${args['nombre']}');
+    print('Apellido: ${args['apellido']}');
 
     return Scaffold(
       appBar: AppBar(
@@ -125,9 +127,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     maxLength: 1,
-                    style: TextStyle(
-                        fontSize:
-                            size.width * 0.04), // Aumentar tamaño de texto
+                    style: TextStyle(fontSize: size.width * 0.04),
                     onChanged: (value) {
                       _onCodeChanged(value, index);
                     },
@@ -153,6 +153,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                 style: TextStyle(fontSize: 5 * textScaleFactor),
               ),
             ),
+            SizedBox(height: size.height * 0.02),
           ],
         ),
       ),

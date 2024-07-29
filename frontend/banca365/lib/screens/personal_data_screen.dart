@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Para el TextInputFormatter
 
 class PersonalDataScreen extends StatefulWidget {
   @override
@@ -10,12 +11,15 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
   String? codigoDactilar;
   String? fotoBase64;
 
+  TextEditingController nombresController = TextEditingController();
+  TextEditingController apellidosController = TextEditingController();
+  TextEditingController celularController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController confirmEmailController = TextEditingController();
   String? provinciaSeleccionada;
 
   bool isValid = false; // Variable para habilitar el botón de continuar
+  String emailValidationMessage = '-';
 
   @override
   void initState() {
@@ -35,18 +39,29 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
     });
   }
 
-  // Función para validar si todos los campos están completos
+  // Función para validar si todos los campos están completos y correctos
   void validateFields() {
     setState(() {
-      if (cedula != null &&
-          codigoDactilar != null &&
+      // Convertir nombres y apellidos a mayúsculas
+      final nombres = nombresController.text.toUpperCase();
+      final apellidos = apellidosController.text.toUpperCase();
+
+      isValid = nombres.isNotEmpty &&
+          apellidos.isNotEmpty &&
+          celularController.text.isNotEmpty &&
           emailController.text.isNotEmpty &&
-          passwordController.text.isNotEmpty &&
-          confirmPasswordController.text.isNotEmpty &&
-          provinciaSeleccionada != null) {
-        isValid = true;
+          confirmEmailController.text.isNotEmpty &&
+          emailController.text == confirmEmailController.text &&
+          provinciaSeleccionada != null;
+
+      if (emailController.text != '') {
+        if (emailController.text == confirmEmailController.text) {
+          emailValidationMessage = '--Correo correcto--';
+        } else {
+          emailValidationMessage = '--Correo incorrecto--';
+        }
       } else {
-        isValid = false;
+        emailValidationMessage = '';
       }
     });
   }
@@ -67,27 +82,69 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
               'Datos Personales',
               style: TextStyle(fontSize: 10 * textScaleFactor),
             ),
-            SizedBox(height: size.height * 0.06),
+            SizedBox(height: size.height * 0.04),
             Text(
               'Empecemos',
               style: TextStyle(fontSize: 8 * textScaleFactor),
             ),
-            SizedBox(height: size.height * 0.04),
+            SizedBox(height: size.height * 0.03),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: TextField(
                 decoration: InputDecoration(
-                  labelText: 'Cédula',
+                  labelText: 'Nombres',
                   labelStyle: TextStyle(fontSize: 5 * textScaleFactor),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(0),
                   ),
                 ),
-                controller: TextEditingController(text: cedula),
-                enabled: false, // Deshabilitar edición
+                controller: nombresController,
+                onChanged: (_) => validateFields(),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                      RegExp('[a-zA-Z ]')) // Acepta solo letras y espacios
+                ],
               ),
             ),
-            SizedBox(height: size.height * 0.04),
+            SizedBox(height: size.height * 0.03),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: TextField(
+                decoration: InputDecoration(
+                  labelText: 'Apellidos',
+                  labelStyle: TextStyle(fontSize: 5 * textScaleFactor),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                ),
+                controller: apellidosController,
+                onChanged: (_) => validateFields(),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                      RegExp('[a-zA-Z ]')) // Acepta solo letras y espacios
+                ],
+              ),
+            ),
+            SizedBox(height: size.height * 0.03),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: TextField(
+                decoration: InputDecoration(
+                  labelText: 'Celular',
+                  labelStyle: TextStyle(fontSize: 5 * textScaleFactor),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                ),
+                controller: celularController,
+                keyboardType: TextInputType.number, // Acepta solo números
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly
+                ], // Solo números
+                onChanged: (_) => validateFields(),
+              ),
+            ),
+            SizedBox(height: size.height * 0.03),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: TextField(
@@ -102,39 +159,34 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
                 onChanged: (_) => validateFields(),
               ),
             ),
-            SizedBox(height: size.height * 0.04),
+            SizedBox(height: size.height * 0.03),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: TextField(
                 decoration: InputDecoration(
-                  labelText: 'Contraseña',
+                  labelText: 'Confirmar Correo Electrónico',
                   labelStyle: TextStyle(fontSize: 5 * textScaleFactor),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(0),
                   ),
                 ),
-                obscureText: true,
-                controller: passwordController,
+                controller: confirmEmailController,
                 onChanged: (_) => validateFields(),
               ),
             ),
-            SizedBox(height: size.height * 0.04),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  labelText: 'Confirmar Contraseña',
-                  labelStyle: TextStyle(fontSize: 5 * textScaleFactor),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(0),
-                  ),
+              child: Text(
+                emailValidationMessage,
+                style: TextStyle(
+                  fontSize: 4 * textScaleFactor,
+                  color: emailValidationMessage == '--Correo correcto--'
+                      ? Colors.green
+                      : Colors.red,
                 ),
-                obscureText: true,
-                controller: confirmPasswordController,
-                onChanged: (_) => validateFields(),
               ),
             ),
-            SizedBox(height: size.height * 0.04),
+            SizedBox(height: size.height * 0.02),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Container(
@@ -151,8 +203,8 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
                     ),
                     isExpanded: true,
                     value: provinciaSeleccionada,
-                    items:
-                        <String>['Loja', 'Cuenca', 'Quito'].map((String value) {
+                    items: <String>['Loja', 'Cuenca', 'Quito', 'Guayaquil']
+                        .map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Padding(
@@ -172,17 +224,19 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
                 ),
               ),
             ),
-            SizedBox(height: size.height * 0.09),
+            SizedBox(height: size.height * 0.06),
             ElevatedButton(
               onPressed: isValid
                   ? () {
                       Navigator.pushNamed(context, '/work', arguments: {
                         'cedula': cedula,
                         'codigoDactilar': codigoDactilar,
+                        'celular': celularController.text,
                         'email': emailController.text,
-                        'password': passwordController.text,
                         'provincia': provinciaSeleccionada,
                         'fotoBase64': fotoBase64,
+                        'nombres': nombresController.text.toUpperCase(),
+                        'apellidos': apellidosController.text.toUpperCase(),
                       });
                     }
                   : null,
@@ -200,10 +254,6 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
     );
   }
 }
-
-
-
-
 
 
 /*

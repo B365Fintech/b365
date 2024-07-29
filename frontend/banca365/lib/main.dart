@@ -1,4 +1,3 @@
-import 'package:banca365/screens/begin_user.dart';
 import 'package:flutter/material.dart';
 import 'screens/slider_screen.dart';
 import 'screens/login_screen.dart';
@@ -10,6 +9,8 @@ import 'screens/tax_screen.dart';
 import 'screens/terms_screen.dart';
 import 'screens/confirmation_screen.dart';
 import 'screens/success_screen.dart';
+import 'screens/accountScreen.dart';
+import 'screens/begin_user.dart';
 
 void main() {
   runApp(MyApp());
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         '/terms': (context) => TermsScreen(),
         '/confirmation': (context) => ConfirmationScreen(),
         '/success': (context) => SuccessScreen(),
+        '/account': (context) => AccountScreen(),
       },
     );
   }
