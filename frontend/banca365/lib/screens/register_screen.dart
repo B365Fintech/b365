@@ -28,6 +28,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       appBar: AppBar(
         title:
             Text('Registro', style: TextStyle(fontSize: 8 * textScaleFactor)),
+        backgroundColor: Colors.blueAccent,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(size.width * 0.05),

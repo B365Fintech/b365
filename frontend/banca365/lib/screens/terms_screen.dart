@@ -152,6 +152,7 @@ class _TermsScreenState extends State<TermsScreen> {
           'Términos y Condiciones',
           style: TextStyle(fontSize: 8 * textScaleFactor),
         ),
+        backgroundColor: Colors.blueAccent,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(size.width * 0.05),
@@ -208,26 +209,30 @@ class _TermsScreenState extends State<TermsScreen> {
                 },
               ),
             ),
-            SizedBox(height: size.height * 0.03),
-            ElevatedButton(
-              onPressed:
-                  _acceptTerms && _readAndAcceptTerms ? _submitForm : null,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
-                minimumSize: Size(buttonWidth, buttonHeight),
-                padding: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.01,
-                  vertical: size.height * 0.01,
+            SizedBox(height: size.height * 0.1),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed:
+                    _acceptTerms && _readAndAcceptTerms ? _submitForm : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                  minimumSize: Size(buttonWidth, buttonHeight),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: size.width * 0.01,
+                    vertical: size.height * 0.01,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(10), // Bordes redondeados
+                  ),
+                  textStyle: TextStyle(fontSize: 5 * textScaleFactor),
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10), // Bordes redondeados
+                child: Text(
+                  'Continuar',
+                  style: TextStyle(fontSize: 5 * textScaleFactor),
                 ),
-                textStyle: TextStyle(fontSize: 5 * textScaleFactor),
-              ),
-              child: Text(
-                'Continuar',
-                style: TextStyle(fontSize: 5 * textScaleFactor),
               ),
             ),
           ],

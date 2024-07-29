@@ -12,7 +12,7 @@ class _SliderScreenState extends State<SliderScreen> {
     super.initState();
     // Esperar 3 segundos antes de navegar a la pantalla de inicio de sesión
     Timer(Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, '/login');
+      Navigator.pushReplacementNamed(context, '/begin');
     });
   }
 

@@ -68,6 +68,7 @@ class _TaxScreenState extends State<TaxScreen> {
           'Impuestos',
           style: TextStyle(fontSize: 10 * textScaleFactor),
         ),
+        backgroundColor: Colors.blueAccent,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(size.width * 0.05),
@@ -138,54 +139,51 @@ class _TaxScreenState extends State<TaxScreen> {
               width: size.width * 0.5,
               height: size.width * 0.5,
             ),
-            ElevatedButton(
-              onPressed: () {
-                if (_impuesto == null) {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text('Selecciona un país para pagar impuestos'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: Text('OK'),
-                        ),
-                      ],
-                    ),
-                  );
-                } else {
-                  // Navegar a la siguiente pantalla /terms y pasar todos los datos
-                  Navigator.pushNamed(context, '/terms', arguments: {
-                    'fotoBase64': fotoBase64,
-                    'cedula': cedula,
-                    'codigoDactilar': codigoDactilar,
-                    'email': email,
-                    'provincia': provincia,
-                    'celular': cedula,
-                    'situacionLaboral': situacionLaboral,
-                    'nombreEmpresa': nombreEmpresa,
-                    'impuesto': _impuesto,
-                    'nombres': nombre,
-                    'apellidos': apellido,
-                  });
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
-                minimumSize: Size(buttonWidth, buttonHeight),
-                padding: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.01,
-                  vertical: size.height * 0.01,
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  if (_impuesto == null) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text('Selecciona un país para pagar impuestos'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: Text('OK'),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    // Navegar a la siguiente pantalla /terms y pasar todos los datos
+                    Navigator.pushNamed(context, '/terms', arguments: {
+                      'fotoBase64': fotoBase64,
+                      'cedula': cedula,
+                      'codigoDactilar': codigoDactilar,
+                      'email': email,
+                      'provincia': provincia,
+                      'celular': celular,
+                      'situacionLaboral': situacionLaboral,
+                      'nombreEmpresa': nombreEmpresa,
+                      'impuesto': _impuesto,
+                      'nombres': nombre,
+                      'apellidos': apellido,
+                    });
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(
+                    vertical: size.height * 0.03,
+                  ),
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                child: Text(
+                  'Continuar',
+                  style: TextStyle(fontSize: 5 * textScaleFactor),
                 ),
-                textStyle: TextStyle(fontSize: 5 * textScaleFactor),
-              ),
-              child: Text(
-                'Continuar',
-                style: TextStyle(fontSize: 5 * textScaleFactor),
               ),
             ),
           ],

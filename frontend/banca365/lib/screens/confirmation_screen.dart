@@ -35,7 +35,8 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
 
   // Función para consumir la API
   Future<void> _verificarCuenta(String email, String codigo) async {
-    final url = Uri.parse('http://localhost:5063/api/Usuario/verificar-cuenta');
+    final url =
+        Uri.parse('https://servicios-web.lat/api/Usuario/verificar-cuenta');
     final response = await http.put(
       url,
       headers: <String, String>{
@@ -48,6 +49,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
     );
 
     if (response.statusCode == 200) {
+      print("entro ");
       // Si la respuesta es 200, navega a la siguiente pantalla
       Navigator.pushNamed(context, '/success');
     } else {
@@ -85,6 +87,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
     print('Términos aceptados: ${args['terminos']}');
     print('Nombre: ${args['nombre']}');
     print('Apellido: ${args['apellido']}');
+    print('presento todos los datos');
 
     return Scaffold(
       appBar: AppBar(
@@ -93,68 +96,74 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
           style: TextStyle(fontSize: 10 * textScaleFactor),
         ),
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(size.width * 0.05),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: size.height * 0.02),
-            Text(
-              'Confirmación de tu cuenta',
-              style: TextStyle(fontSize: 8 * textScaleFactor),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: size.height * 0.03),
-            Text(
-              'Se le enviará un correo a su correo o número de celular con un código',
-              style: TextStyle(fontSize: 5 * textScaleFactor),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: size.height * 0.03),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(6, (index) {
-                return Container(
-                  margin: EdgeInsets.symmetric(horizontal: size.width * 0.02),
-                  width: size.width * 0.10,
-                  child: TextField(
-                    decoration: InputDecoration(
-                      labelText: ' ',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                    ),
-                    keyboardType: TextInputType.number,
-                    textAlign: TextAlign.center,
-                    maxLength: 1,
-                    style: TextStyle(fontSize: size.width * 0.04),
-                    onChanged: (value) {
-                      _onCodeChanged(value, index);
-                    },
-                  ),
-                );
-              }),
-            ),
-            SizedBox(height: size.height * 0.03),
-            ElevatedButton(
-              onPressed: _isButtonEnabled
-                  ? () {
-                      _codigo = _codigoCompleto;
-                      _verificarCuenta(args['email'], _codigo);
-                    }
-                  : null,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
-                minimumSize: Size(size.width * 0.8, size.height * 0.07),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(size.width * 0.05),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: size.height * 0.02),
+              Text(
+                'Confirmación de tu cuenta',
+                style: TextStyle(fontSize: 8 * textScaleFactor),
+                textAlign: TextAlign.center,
               ),
-              child: Text(
-                'Continuar',
+              SizedBox(height: size.height * 0.03),
+              Text(
+                'Se le enviará un correo a su correo o número de celular con un código',
                 style: TextStyle(fontSize: 5 * textScaleFactor),
+                textAlign: TextAlign.center,
               ),
-            ),
-            SizedBox(height: size.height * 0.02),
-          ],
+              SizedBox(height: size.height * 0.03),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(6, (index) {
+                  return Container(
+                    margin: EdgeInsets.symmetric(horizontal: size.width * 0.02),
+                    width: size.width * 0.10,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        labelText: ' ',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
+                      keyboardType: TextInputType.number,
+                      textAlign: TextAlign.center,
+                      maxLength: 1,
+                      style: TextStyle(fontSize: size.width * 0.04),
+                      onChanged: (value) {
+                        _onCodeChanged(value, index);
+                      },
+                    ),
+                  );
+                }),
+              ),
+              SizedBox(height: size.height * 0.03),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _isButtonEnabled
+                      ? () {
+                          _codigo = _codigoCompleto;
+                          _verificarCuenta(args['email'], _codigo);
+                        }
+                      : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                    minimumSize: Size(size.width * 0.8, size.height * 0.07),
+                  ),
+                  child: Text(
+                    'Continuar',
+                    style: TextStyle(fontSize: 5 * textScaleFactor),
+                  ),
+                ),
+              ),
+              SizedBox(height: size.height * 0.02),
+            ],
+          ),
         ),
       ),
     );

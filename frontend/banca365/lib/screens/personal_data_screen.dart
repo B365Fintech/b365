@@ -72,7 +72,10 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
     final double textScaleFactor = size.width * 0.005;
 
     return Scaffold(
-      appBar: AppBar(title: Text('Datos Personales')),
+      appBar: AppBar(
+        title: Text('Datos Personales'),
+        backgroundColor: Colors.blueAccent,
+      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(

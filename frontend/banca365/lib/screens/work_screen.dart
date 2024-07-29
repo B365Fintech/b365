@@ -36,8 +36,11 @@ class _WorkScreenState extends State<WorkScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Situación Laboral',
-            style: TextStyle(fontSize: 10 * textScaleFactor)),
+        title: Text(
+          'Situación Laboral',
+          style: TextStyle(fontSize: 10 * textScaleFactor),
+        ),
+        backgroundColor: Colors.blueAccent,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -48,7 +51,7 @@ class _WorkScreenState extends State<WorkScreen> {
               Text(
                 'Cuéntanos en qué trabajas',
                 style: TextStyle(
-                  color: Color.fromARGB(255, 0, 0, 0),
+                  color: Colors.black,
                   fontSize: 10 * textScaleFactor,
                   fontWeight: FontWeight.bold,
                 ),
@@ -58,7 +61,7 @@ class _WorkScreenState extends State<WorkScreen> {
               Text(
                 'Situación laboral',
                 style: TextStyle(
-                  color: Color.fromARGB(255, 0, 0, 0),
+                  color: Colors.black,
                   fontSize: 8 * textScaleFactor,
                 ),
               ),
@@ -72,7 +75,7 @@ class _WorkScreenState extends State<WorkScreen> {
                   title: Text(
                     'Trabajador independiente',
                     style: TextStyle(
-                      color: Color.fromARGB(255, 0, 0, 0),
+                      color: Colors.black,
                       fontSize: 5 * textScaleFactor,
                     ),
                   ),
@@ -99,7 +102,7 @@ class _WorkScreenState extends State<WorkScreen> {
                   title: Text(
                     'Trabajo en una empresa',
                     style: TextStyle(
-                      color: Color.fromARGB(255, 0, 0, 0),
+                      color: Colors.black,
                       fontSize: 5 * textScaleFactor,
                     ),
                   ),
@@ -126,7 +129,7 @@ class _WorkScreenState extends State<WorkScreen> {
                   title: Text(
                     'No trabajo',
                     style: TextStyle(
-                      color: Color.fromARGB(255, 0, 0, 0),
+                      color: Colors.black,
                       fontSize: 5 * textScaleFactor,
                     ),
                   ),
@@ -146,7 +149,7 @@ class _WorkScreenState extends State<WorkScreen> {
               SizedBox(height: size.height * 0.03),
               if (_situacionLaboral == 'Empresa')
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
                   child: TextField(
                     controller: _companyController,
                     decoration: InputDecoration(
@@ -163,50 +166,54 @@ class _WorkScreenState extends State<WorkScreen> {
                       ),
                     ),
                     style: TextStyle(
-                      color: Color.fromARGB(255, 0, 0, 0),
+                      color: Colors.black,
                       fontSize: 5 * textScaleFactor,
                     ),
                   ),
                 ),
               SizedBox(height: size.height * 0.09),
-              ElevatedButton(
-                onPressed: () {
-                  // Validar que se seleccione una situación laboral
-                  if (_situacionLaboral == null) {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title:
-                            Text('Selecciona una opción de situación laboral'),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: Text('OK'),
-                          ),
-                        ],
-                      ),
-                    );
-                  } else {
-                    // Navegar a la siguiente pantalla /tax
-                    Navigator.pushNamed(context, '/tax', arguments: {
-                      // Pasar los datos actuales más los recibidos desde PersonalDataScreen
-                      ...args,
-                      'situacionLaboral': _situacionLaboral,
-                      if (_situacionLaboral == 'Empresa')
-                        'nombreEmpresa': _companyController.text,
-                    });
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: size.height * 0.21,
-                    vertical: size.height * 0.02,
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Validar que se seleccione una situación laboral
+                    if (_situacionLaboral == null) {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text(
+                              'Selecciona una opción de situación laboral'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      // Navegar a la siguiente pantalla /tax
+                      Navigator.pushNamed(context, '/tax', arguments: {
+                        // Pasar los datos actuales más los recibidos desde PersonalDataScreen
+                        ...args,
+                        'situacionLaboral': _situacionLaboral,
+                        if (_situacionLaboral == 'Empresa')
+                          'nombreEmpresa': _companyController.text,
+                      });
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(
+                      vertical: size.height * 0.03,
+                    ),
+                  ),
+                  child: Text(
+                    'Continuar',
+                    style: TextStyle(fontSize: 5 * textScaleFactor),
                   ),
                 ),
-                child: Text('Continuar',
-                    style: TextStyle(fontSize: 5 * textScaleFactor)),
               ),
             ],
           ),
